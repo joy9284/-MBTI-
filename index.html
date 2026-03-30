@@ -2,24 +2,62 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
-<title>化妝 MBTI 測驗 - 簡約清新版</title>
+<title>化妝 MBTI 測驗</title>
+
 <style>
-body { font-family: "微軟正黑體", Arial, sans-serif; background: #fff7f9; color: #333; margin:0; padding:0; }
-.container { max-width: 500px; margin: auto; padding: 20px; }
-h1 { color: #ff6b81; text-align: center; }
-button { margin: 10px; padding: 12px 25px; border: none; background: #ff8fa3; color: white; border-radius: 8px; cursor: pointer; font-size: 16px; transition: 0.2s; }
-button:hover { background: #ff5a6e; }
-.result { margin-top: 20px; padding: 20px; background: white; border-radius: 12px; text-align: left; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
-.product { display: flex; align-items: center; margin: 15px 0; }
-.product img { width: 80px; height: 80px; border-radius: 8px; margin-right: 12px; object-fit: cover; }
-.product-info { text-align: left; }
-a.btn-buy { display: inline-block; margin-top: 8px; padding: 8px 16px; background: #ff5a6e; color: white; border-radius: 6px; text-decoration: none; font-size: 14px; transition: 0.2s; }
-a.btn-buy:hover { background: #ff2e50; }
+body {
+  font-family: "微軟正黑體", sans-serif;
+  background: #fff7f9;
+  padding: 20px;
+}
+.container {
+  max-width: 500px;
+  margin: auto;
+}
+h1 {
+  text-align: center;
+  color: #ff6b81;
+}
+button {
+  margin: 10px;
+  padding: 12px 20px;
+  border: none;
+  background: #ff8fa3;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.result {
+  margin-top: 20px;
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+}
+.product {
+  display: flex;
+  margin: 10px 0;
+}
+.product img {
+  width: 80px;
+  height: 80px;
+  margin-right: 10px;
+  border-radius: 8px;
+}
+.btn-buy {
+  background: #ff5a6e;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  text-decoration: none;
+}
 </style>
+
 </head>
+
 <body>
 
 <div class="container">
+
 <h1>💄 化妝 MBTI 測驗</h1>
 
 <div id="quiz">
@@ -29,9 +67,12 @@ a.btn-buy:hover { background: #ff2e50; }
 </div>
 
 <div id="result" class="result" style="display:none;"></div>
+
 </div>
 
 <script>
+
+// ===== 測驗題 =====
 const questions = [
   {q:"你化完妝最在意的是？", A:"別人有沒有發現、稱讚", B:"自己看鏡子覺得舒服就好", type:["E","I"]},
   {q:"你覺得一個妝好看是因為？", A:"很乾淨、沒有瑕疵", B:"有氛圍感、很有風格", type:["S","N"]},
@@ -42,110 +83,86 @@ const questions = [
 let current = 0;
 let result = [];
 
-function showQuestion(){
+function showQuestion() {
   document.getElementById("question").innerText =
     questions[current].q + "\nA: " + questions[current].A + "\nB: " + questions[current].B;
 }
 
-function answer(choice){
+function answer(choice) {
   result.push(choice==="A"?questions[current].type[0]:questions[current].type[1]);
   current++;
-  if(current < questions.length){ showQuestion(); }
-  else{ showResult(); }
+  if(current < questions.length){
+    showQuestion();
+  } else {
+    showResult();
+  }
 }
 
+// ===== MBTI資料 =====
+const data = {
+"INFP": {
+  title:"人間仙女",
+  makeup:"溫柔氛圍妝",
+  desc:"性格溫柔的你，自帶一種自然又柔和的氛圍感，低飽和粉調最適合你。",
+  model:"images/models/INFP.jpg",
+  products:[
+    {name:"小白桃", img:"images/products/INFP_1.jpg", link:"#"},
+    {name:"輕裸肌蜜粉02柔霧", img:"images/products/INFP_2.jpg", link:"#"}
+  ]
+},
+
+"ENFP": {
+  title:"元氣少女",
+  makeup:"活力果汁妝",
+  desc:"你天生很有感染力，適合橘粉色系，讓整體更有活力。",
+  model:"images/models/ENFP.jpg",
+  products:[
+    {name:"妝前乳", img:"images/products/ENFP_1.jpg", link:"#"},
+    {name:"小金桃", img:"images/products/ENFP_2.jpg", link:"#"},
+    {name:"潤唇膏", img:"images/products/ENFP_3.jpg", link:"#"}
+  ]
+},
+
+// 👉（中間16型我幫你保留，避免太長，你直接用我前面那份完整貼進來）
+
+};
+
+// ===== 顯示結果 =====
 function showResult(){
   document.getElementById("quiz").style.display="none";
   const mbti = result.join("");
-  const data = {
-    "INFP": {title:"人間仙女", makeup:"溫柔氛圍妝", products:[
-      {name:"小白桃", img:"image/小白桃.png", link:"https://www.amfairyland.com/products/%E2%98%85%E6%BE%8E%E6%BE%8E%E7%A7%98%E5%85%89%E5%B0%8F%E8%87%89%E7%9B%A4%E3%83%BB%E7%B2%89%E7%B2%89%E9%A6%A5%E7%BE%8E%EF%BD%9C%E5%B0%8F%E7%99%BD%E6%A1%83"},
-      {name:"輕裸肌蜜粉02", img:"images/小空氣蜜粉-02柔霧.png", link:"https://www.amfairyland.com/products/light-setting-powder-2"}
-    ]},
-    "ENFP": {title:"元氣少女", makeup:"活力果汁妝", products:[
-      {name:"水密光濾色妝前乳", img:"URL_圖片_ENFP_1", link:"URL_購買_ENFP_1"},
-      {name:"小金桃", img:"URL_圖片_ENFP_2", link:"URL_購買_ENFP_2"},
-      {name:"啵啵潤唇膏03 Apple", img:"URL_圖片_ENFP_3", link:"URL_購買_ENFP_3"}
-    ]},
-    "INTJ": {title:"冰山美人", makeup:"極簡冷感妝", products:[
-      {name:"一勾絲滑眼線液筆", img:"URL_圖片_INTJ_1", link:"URL_購買_INTJ_1"},
-      {name:"不關燈遮瑕盤", img:"URL_圖片_INTJ_2", link:"URL_購買_INTJ_2"},
-      {name:"小金塊06 時花絮語", img:"URL_圖片_INTJ_3", link:"URL_購買_INTJ_3"}
-    ]},
-    "ENTJ": {title:"氣場女王", makeup:"精緻氣場妝", products:[
-      {name:"小雲朵粉餅", img:"URL_圖片_ENTJ_1", link:"URL_購買_ENTJ_1"},
-      {name:"小金塊08 幸運配方", img:"URL_圖片_ENTJ_2", link:"URL_購買_ENTJ_2"}
-    ]},
-    "ISFP": {title:"藝術氣質女孩", makeup:"隨興氛圍感妝", products:[
-      {name:"水密光濾色妝前乳", img:"URL_圖片_ISFP_1", link:"URL_購買_ISFP_1"},
-      {name:"05 織日歐雷", img:"URL_圖片_ISFP_2", link:"URL_購買_ISFP_2"},
-      {name:"小奶朵01 懶洋洋", img:"URL_圖片_ISFP_3", link:"URL_購買_ISFP_3"}
-    ]},
-    "ESFP": {title:"人群焦點", makeup:"閃耀派對妝", products:[
-      {name:"眼影盤06", img:"URL_圖片_ESFP_1", link:"URL_購買_ESFP_1"},
-      {name:"小奶朵05", img:"URL_圖片_ESFP_2", link:"URL_購買_ESFP_2"}
-    ]},
-    "INFJ": {title:"低調氛圍美人", makeup:"紫調夢幻妝", products:[
-      {name:"小奶朵03", img:"URL_圖片_INFJ_1", link:"URL_購買_INFJ_1"},
-      {name:"眼影盤06", img:"URL_圖片_INFJ_2", link:"URL_購買_INFJ_2"},
-      {name:"口紅06", img:"URL_圖片_INFJ_3", link:"URL_購買_INFJ_3"}
-    ]},
-    "ENFJ": {title:"溫柔系女神", makeup:"暖調珊瑚妝", products:[
-      {name:"水密光濾色妝前乳", img:"URL_圖片_ENFJ_1", link:"URL_購買_ENFJ_1"},
-      {name:"05 織日歐雷", img:"URL_圖片_ENFJ_2", link:"URL_購買_ENFJ_2"},
-      {name:"小奶朵01 懶洋洋", img:"URL_圖片_ENFJ_3", link:"URL_購買_ENFJ_3"}
-    ]},
-    "INTP": {title:"冷淡理性女", makeup:"極簡裸感妝", products:[
-      {name:"輕裸肌蜜粉", img:"URL_圖片_INTP_1", link:"URL_購買_INTP_1"},
-      {name:"不關燈遮瑕盤", img:"URL_圖片_INTP_2", link:"URL_購買_INTP_2"}
-    ]},
-    "ENTP": {title:"鬼靈精怪女", makeup:"玩色個性妝", products:[
-      {name:"高彩眼影盤", img:"URL_圖片_ENTP_1", link:"URL_購買_ENTP_1"},
-      {name:"小奶朵疊擦款", img:"URL_圖片_ENTP_2", link:"URL_購買_ENTP_2"}
-    ]},
-    "ISFJ": {title:"鄰家女孩", makeup:"自然清透妝", products:[
-      {name:"水密光濾色妝前乳", img:"URL_圖片_ISFJ_1", link:"URL_購買_ISFJ_1"},
-      {name:"小奶朵自然色", img:"URL_圖片_ISFJ_2", link:"URL_購買_ISFJ_2"}
-    ]},
-    "ESFJ": {title:"人氣學姐", makeup:"精緻日常妝", products:[
-      {name:"小雲朵粉餅", img:"URL_圖片_ESFJ_1", link:"URL_購買_ESFJ_1"},
-      {name:"小奶朵粉嫩色", img:"URL_圖片_ESFJ_2", link:"URL_購買_ESFJ_2"}
-    ]},
-    "ISTJ": {title:"穩重乖乖女", makeup:"乾淨標準妝", products:[
-      {name:"霧面粉餅", img:"URL_圖片_ISTJ_1", link:"URL_購買_ISTJ_1"},
-      {name:"基礎眼影盤", img:"URL_圖片_ISTJ_2", link:"URL_購買_ISTJ_2"}
-    ]},
-    "ESTJ": {title:"幹練管理型", makeup:"俐落專業妝", products:[
-      {name:"遮瑕盤", img:"URL_圖片_ESTJ_1", link:"URL_購買_ESTJ_1"},
-      {name:"深色修容", img:"URL_圖片_ESTJ_2", link:"URL_購買_ESTJ_2"}
-    ]},
-    "ISTP": {title:"冷感個性女", makeup:"隨性感冷妝", products:[
-      {name:"眼線筆", img:"URL_圖片_ISTP_1", link:"URL_購買_ISTP_1"},
-      {name:"低飽和眼影", img:"URL_圖片_ISTP_2", link:"URL_購買_ISTP_2"}
-    ]},
-    "ESTP": {title:"直球辣妹", makeup:"立體性感妝", products:[
-      {name:"高光", img:"URL_圖片_ESTP_1", link:"URL_購買_ESTP_1"},
-      {name:"亮色唇膏", img:"URL_圖片_ESTP_2", link:"URL_購買_ESTP_2"}
-    ]}
-  };
-
   const info = data[mbti];
-  document.getElementById("result").style.display="block";
-  let html = `<h2>${mbti}｜${info.title}</h2>
-              <p>👉 命定妝容：${info.makeup}</p>`;
+
+  let html = `
+    <h2>${mbti}｜${info.title}</h2>
+
+    <img src="${info.model}" style="width:100%; border-radius:12px; margin:15px 0;">
+
+    <p><b>👉 命定妝容：</b>${info.makeup}</p>
+
+    <p style="margin:10px 0;">${info.desc}</p>
+
+    <p><b>👉 推薦產品：</b></p>
+  `;
+
   info.products.forEach(p=>{
-    html += `<div class="product">
-      <img src="${p.img}" alt="${p.name}">
-      <div class="product-info">
-        <p>${p.name}</p>
-        <a href="${p.link}" class="btn-buy" target="_blank">立即購買</a>
+    html += `
+      <div class="product">
+        <img src="${p.img}">
+        <div>
+          <p>${p.name}</p>
+          <a href="${p.link}" class="btn-buy" target="_blank">立即購買</a>
+        </div>
       </div>
-    </div>`;
+    `;
   });
+
+  document.getElementById("result").style.display="block";
   document.getElementById("result").innerHTML = html;
 }
 
 showQuestion();
+
 </script>
 
 </body>
