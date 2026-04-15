@@ -2,95 +2,246 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
-<title>化妝 MBTI 測驗</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>化妝MBTI測驗</title>
 
 <style>
-body {
-  font-family: "微軟正黑體", sans-serif;
-  background: #fff7f9;
-  padding: 20px;
+body{
+  margin:0;
+  font-family:"微軟正黑體";
+  background:#d8c6cc;
+  color:#6e5a5a;
+  text-align:center;
 }
-.container {
-  max-width: 500px;
-  margin: auto;
-}
-h1 {
-  text-align: center;
-  color: #ff6b81;
-}
-button {
-  margin: 10px;
-  padding: 12px 20px;
-  border: none;
-  background: #ff8fa3;
-  color: white;
-  border-radius: 8px;
-  cursor: pointer;
-}
-.result {
-  margin-top: 20px;
-  background: white;
-  padding: 20px;
-  border-radius: 12px;
-}
-.product {
-  display: flex;
-  margin: 10px 0;
-}
-.product img {
-  width: 80px;
-  height: 80px;
-  margin-right: 10px;
-  border-radius: 8px;
-}
-.btn-buy {
-  background: #ff5a6e;
-  color: white;
-  padding: 6px 12px;
-  border-radius: 6px;
-  text-decoration: none;
-}
-</style>
 
+/* 每頁 */
+.page{
+  display:none;
+  height:100vh;
+  padding:20px;
+  box-sizing:border-box;
+}
+.active{ display:block; }
+
+/* ===== 共用 ===== */
+.box{
+  background:#eee;
+  border-radius:30px;
+  padding:12px 24px;
+  display:inline-block;
+}
+
+/* ===== 首頁 ===== */
+.home{
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.title{
+  margin-top:60px;
+  font-size:24px;
+}
+
+.desc{
+  font-size:16px;
+  line-height:1.8;
+}
+
+.start-btn{
+  margin-bottom:60px;
+  background:#eee;
+  padding:12px 30px;
+  border-radius:20px;
+  border:none;
+  font-size:18px;
+}
+
+/* ===== 題目 ===== */
+.quiz{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+}
+
+.character{
+  width:180px;
+  margin-bottom:20px;
+}
+
+.bubble{
+  background:#eee;
+  border-radius:50px;
+  padding:20px 30px;
+  margin-bottom:30px;
+}
+
+.option{
+  width:80%;
+  margin:10px 0;
+  padding:14px;
+  border-radius:20px;
+  border:none;
+  font-size:18px;
+  background:#eee;
+}
+
+/* ===== 結果 ===== */
+.result{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+
+.result-title{
+  margin-top:40px;
+  font-size:26px;
+}
+
+.makeup-box{
+  border:3px solid #000;
+  margin:20px 0;
+}
+
+.makeup-box img{
+  width:200px;
+}
+
+.desc-text{
+  width:85%;
+  line-height:1.8;
+  margin:20px 0;
+}
+
+.product-box{
+  border:3px solid #000;
+  padding:15px;
+  width:90%;
+}
+
+.products{
+  display:flex;
+  justify-content:space-around;
+  margin-top:10px;
+}
+
+.product-item img{
+  width:70px;
+  height:70px;
+  object-fit:contain;
+}
+
+.buy{
+  margin-top:30px;
+  font-size:24px;
+  text-decoration:none;
+  color:#6e5a5a;
+}
+
+</style>
 </head>
 
 <body>
 
-<div class="container">
+<!-- 首頁 -->
+<div id="page1" class="page active home">
 
-<h1>💄 化妝 MBTI 測驗</h1>
+  <div class="box title">💄 化妝MBTI測驗</div>
 
-<div id="quiz">
-  <p id="question"></p>
-  <button onclick="answer('A')">A</button>
-  <button onclick="answer('B')">B</button>
+  <div class="desc">
+嘿你知道嗎，MBTI其實會隨情境轉換<br>
+有些 I 人在工作時會用 E 人的方式去交際<br>
+有些時候 P 人會用 J 人的方式思考<br><br>
+一起來看看妳化妝時的MBTI是什麼吧
+  </div>
+
+  <button class="start-btn" onclick="startQuiz()">開始→</button>
+
 </div>
 
-<div id="result" class="result" style="display:none;"></div>
+<!-- 題目 -->
+<div id="page2" class="page quiz">
+
+  <div class="bubble" id="question"></div>
+
+  <img src="images/character.png" class="character">
+
+  <button class="option" onclick="answer('A')" id="optA"></button>
+  <button class="option" onclick="answer('B')" id="optB"></button>
+
+</div>
+
+<!-- 結果 -->
+<div id="page3" class="page result">
+
+  <div class="box result-title" id="mbtiTitle"></div>
+
+  <div class="makeup-box">
+    <div>🔍 推薦妝容</div>
+    <img id="modelImg">
+    <div id="makeup"></div>
+  </div>
+
+  <div class="desc-text" id="desc"></div>
+
+  <div class="product-box">
+    <div>🔍 命定化妝品</div>
+
+    <div class="products" id="products"></div>
+  </div>
+
+  <a href="https://www.amfairyland.com/products" target="_blank" class="buy">
+    去購買 →
+  </a>
 
 </div>
 
 <script>
 
-// ===== 測驗題 =====
 const questions = [
-  {q:"你化完妝最在意的是？", A:"別人有沒有發現、稱讚", B:"自己看鏡子覺得舒服就好", type:["E","I"]},
-  {q:"你覺得一個妝好看是因為？", A:"很乾淨、沒有瑕疵", B:"有氛圍感、很有風格", type:["S","N"]},
-  {q:"選化妝品時你會？", A:"看成分、功能、評價", B:"看感覺、包裝", type:["T","F"]},
-  {q:"你的化妝習慣？", A:"固定流程", B:"看心情", type:["J","P"]}
+  {q:"你的化妝習慣？", A:"有的固定流程", B:"看心情想畫什麼就畫什麼", type:["J","P"]},
+  {q:"你化完妝最在意的是？", A:"別人有沒有發現", B:"自己舒服就好", type:["E","I"]},
+  {q:"你喜歡的妝感？", A:"乾淨無瑕", B:"氛圍感", type:["S","N"]},
+  {q:"選產品方式？", A:"看評價", B:"看感覺", type:["T","F"]}
 ];
 
 let current = 0;
 let result = [];
 
-function showQuestion() {
-  document.getElementById("question").innerText =
-    questions[current].q + "\nA: " + questions[current].A + "\nB: " + questions[current].B;
+const data = {
+"INFP":{
+  title:"INFP人間仙女",
+  makeup:"溫柔氛圍妝",
+  desc:"你屬於比較內斂、感受力很強的人，情緒細膩，容易被氛圍影響。",
+  model:"images/models/INFP.jpg",
+  products:[
+    {img:"images/products/小蜜乳.png", name:"小蜜乳"},
+    {img:"images/products/小奶朵.png", name:"小奶朵"},
+    {img:"images/products/小金桃.png", name:"小金桃"}
+  ]
+}
+};
+
+function startQuiz(){
+  document.getElementById("page1").classList.remove("active");
+  document.getElementById("page2").classList.add("active");
+  showQuestion();
 }
 
-function answer(choice) {
-  result.push(choice==="A"?questions[current].type[0]:questions[current].type[1]);
+function showQuestion(){
+  let q = questions[current];
+  document.getElementById("question").innerText = q.q;
+  document.getElementById("optA").innerText = "A: " + q.A;
+  document.getElementById("optB").innerText = "B: " + q.B;
+}
+
+function answer(choice){
+  let q = questions[current];
+  result.push(choice==="A"?q.type[0]:q.type[1]);
   current++;
+
   if(current < questions.length){
     showQuestion();
   } else {
@@ -98,68 +249,35 @@ function answer(choice) {
   }
 }
 
-// ===== MBTI資料 =====
-const data = {
-"INFP": {
-  title:"人間仙女",
-  makeup:"溫柔氛圍妝",
-  desc:"性格溫柔的你，自帶一種自然又柔和的氛圍感，低飽和粉調最適合你。",
-  model:"images/models/INFP.jpg",
-  products:[
-    {name:"小白桃", img:"images/小白桃.png", link:"https://www.amfairyland.com/products/%E2%98%85%E6%BE%8E%E6%BE%8E%E7%A7%98%E5%85%89%E5%B0%8F%E8%87%89%E7%9B%A4%E3%83%BB%E7%B2%89%E7%B2%89%E9%A6%A5%E7%BE%8E%EF%BD%9C%E5%B0%8F%E7%99%BD%E6%A1%83"},
-    {name:"輕裸肌蜜粉02柔霧", img:"images/小空氣蜜粉-02柔霧.png", link:"https://www.amfairyland.com/products/light-setting-powder-2"}
-  ]
-},
-
-"ENFP": {
-  title:"元氣少女",
-  makeup:"活力果汁妝",
-  desc:"你天生很有感染力，適合橘粉色系，讓整體更有活力。",
-  model:"images/models/ENFP.jpg",
-  products:[
-    {name:"妝前乳", img:"images/products/ENFP_1.jpg", link:"#"},
-    {name:"小金桃", img:"images/products/ENFP_2.jpg", link:"#"},
-    {name:"潤唇膏", img:"images/products/ENFP_3.jpg", link:"#"}
-  ]
-},
-
-// 👉（中間16型我幫你保留，避免太長，你直接用我前面那份完整貼進來）
-
-};
-
-// ===== 顯示結果 =====
 function showResult(){
-  document.getElementById("quiz").style.display="none";
-  const mbti = result.join("");
-  const info = data[mbti];
+  document.getElementById("page2").classList.remove("active");
+  document.getElementById("page3").classList.add("active");
 
-  let html = `
-    <h2>${mbti}｜${info.title}</h2>
+  let mbti = result.join("");
+  let info = data[mbti] || data["INFP"];
 
-    <img src="${info.model}" style="width:100%; border-radius:12px; margin:15px 0;">
+  document.getElementById("mbtiTitle").innerText = info.title;
+  document.getElementById("makeup").innerText = info.makeup;
+  document.getElementById("desc").innerText = info.desc;
+  document.getElementById("modelImg").src = info.model;
 
-    <p><b>👉 命定妝容：</b>${info.makeup}</p>
-
-    <p style="margin:10px 0;">${info.desc}</p>
-
-    <p><b>👉 推薦產品：</b></p>
-  `;
-
+  let html = "";
   info.products.forEach(p=>{
     html += `
-      <div class="product">
+      <div class="product-item">
         <img src="${p.img}">
-        <div>
-          <p>${p.name}</p>
-          <a href="${p.link}" class="btn-buy" target="_blank">立即購買</a>
-        </div>
+        <div>${p.name}</div>
       </div>
     `;
   });
 
-  document.getElementById("result").style.display="block";
-  document.getElementById("result").innerHTML = html;
+  document.getElementById("products").innerHTML = html;
 }
+
+</script>
+
+</body>
+</html>
 
 showQuestion();
 
